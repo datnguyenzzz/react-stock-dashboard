@@ -1,9 +1,10 @@
 import React from "react";
+import Search from "./Search";
 
 function App() {
   return (
     <>
-      <p> LMAO </p>
+      <Search/>
     </>
   );
 }
