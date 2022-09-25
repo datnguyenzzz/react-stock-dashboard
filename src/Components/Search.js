@@ -1,24 +1,34 @@
 import React, { useState } from "react";
+import "../css/styles.css";
+import "../css/search.css";
 
 var Search = () => {
 
-    const [stockName, setStockName] = useState("");
+    const [stockCode, setstockCode] = useState("");
 
     var handleSearchQuery = () => {
-        alert("Make api call with " + stockName);
+        alert("Make api call with " + stockCode);
     }
 
     return (
-        <>
-            <h2>Search stock code: </h2>
-            <input type="text" value = {stockName}
-                onChange={(event)=>{
-                    setStockName(event.target.value);
-                }}
-                placeholder = "Stock code (e.g GOOG)"/>
+        <div className="card card-container search">
+            <div className="card-body">
+                <h2 className="h6 mb-2">
+                    Search stock code: 
+                </h2>
+                <input type="text" value = {stockCode}
+                    className="form-control"
+                    onChange={(event)=>{
+                        setstockCode(event.target.value);
+                    }}
+                    placeholder = "Stock code (e.g GOOG)"/>
 
-            <button onClick={handleSearchQuery}> Search result </button>
-        </>
+                <button onClick={handleSearchQuery}
+                    className="btn btn-secondary w-100 btn-search"> 
+                    Search result 
+                </button>
+            </div>
+        </div>
     );
 }
 

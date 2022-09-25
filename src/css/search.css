@@ -1,0 +1,11 @@
+.search.card-container {
+    padding: 5px;
+    font-size: 15px;
+    height: fit-content;
+}
+
+.btn-search {
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
