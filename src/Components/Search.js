@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import "../css/styles.css";
 import "../css/search.css";
+import { ACTION } from "./App";
 
-var Search = () => {
+var Search = ({ dispatch }) => {
 
     const [stockCode, setstockCode] = useState("");
 
+    const passStockCode = {
+        type: ACTION.SET_STOCK_CODE,
+        payload: {
+            stockCode: stockCode
+        }
+    }
+
     var handleSearchQuery = () => {
+        dispatch(passStockCode);
         alert("Make api call with " + stockCode);
+        setstockCode("");
     }
 
     return (
