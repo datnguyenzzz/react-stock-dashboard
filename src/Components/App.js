@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import Search from "./Search";
 import "../css/App.css"
 import "../css/styles.css"
+import MyChart from "./Chart";
 
 export const ACTION = {
   SET_STOCK_CODE: "set-stock-code",
@@ -28,6 +29,12 @@ const reducer = (state, action) => {
 
 function App() {
 
+  const renderCount = useRef(0);
+
+  useEffect(() => {
+    renderCount.current+=1;
+  })
+
   const [state, dispatch] = useReducer(reducer, {stockCode: "", candleData: {}});
 
   return (
@@ -37,7 +44,7 @@ function App() {
           <div className="app-container__left">
             <Search dispatch = {dispatch} />
             <div>
-              Filter
+              Filter {renderCount.current}
             </div>
           </div>
           <div className="app-container__right">
@@ -46,14 +53,13 @@ function App() {
                 <h2 className="h4 mb-0">
                   {(state.stockCode==="")? "" : state.stockCode + " (last 72 hours)"}
                 </h2>
-                {Object.keys(state.candleData).length===0 ? 
+                {Object.keys(state.candleData).length===0 ||
+                  state.candleData.s === "no_data" ? 
                   <p className="no-candle-data-message">
                     No current stock found. Go to the first box and search for a stock.
                   </p>
                   : 
-                  <div>
-                    {state.candleData.c}
-                  </div>
+                  <MyChart stockCode = {state.stockCode} candleData = {state.candleData} dispatch = {dispatch} />
                 }
               </div>
             </div>

@@ -11,8 +11,7 @@ var Search = ({ dispatch }) => {
     const passStockCode = {
         type: ACTION.SET_STOCK_CODE,
         payload: {
-            stockCode: stockCode,
-            candleData: {}
+            stockCode: stockCode
         }
     }
 
@@ -20,7 +19,6 @@ var Search = ({ dispatch }) => {
         return {
             type: ACTION.SET_CANDLE_DATA,
             payload: {
-                stockCode: stockCode,
                 candleData: data
             }
         }
@@ -66,6 +64,10 @@ var Search = ({ dispatch }) => {
         let toDate = Math.round(new Date().getTime() / 1000);
         let fromDate = toDate - (72 * 3600);
         const candlePromise = new Promise((resolve, reject) => {
+            //remove candle
+            var payload = passCandleData({});
+            dispatch(payload);
+            //make call api
             var candle = finnhubApi.get('/stock/candle', {
                 params: {
                     symbol: stockCode,
@@ -96,11 +98,8 @@ var Search = ({ dispatch }) => {
     }
 
     var handleCandleData = (data) => {
-        if (data.s === 'ok') {
-            var payload = passCandleData(data);
-            console.log(payload)
-            dispatch(payload);
-        }
+        var payload = passCandleData(data);
+        dispatch(payload);
     }
 
     /**
