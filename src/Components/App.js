@@ -12,6 +12,7 @@ export const ACTION = {
  * @param {*} state 
  * @param {*} action
  * @apiNode action = {type: ... , payload: {...}} 
+ * @apiNode state = {stockCode: ...}
  */
 const reducer = (state, action) => {
   switch (action.type) {
@@ -39,7 +40,7 @@ function App() {
           <div className="app-container__right">
             <div className="card card-container">
               <div className="card-body">
-                {state.stockCode}
+                {(state.stockCode==="")? "Stock code" : state.stockCode}
               </div>
             </div>
           </div>

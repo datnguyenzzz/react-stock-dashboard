@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../css/styles.css";
 import "../css/search.css";
 import { ACTION } from "./App";
+import finnhubApi from "../apis/finnhubApi";
 
 var Search = ({ dispatch }) => {
 
@@ -14,9 +15,39 @@ var Search = ({ dispatch }) => {
         }
     }
 
+    /**
+     * 1. pass stock code to App state
+     * 2. make api call
+     * 
+     * quote: https://finnhub.io/api/v1/quote?symbol=AAPL&token=
+     * 
+     * candle: /stock/candle?symbol=&resolution=&from=&to=
+     * 3. clear current code
+     */
     var handleSearchQuery = () => {
+        //pass stock code to App
         dispatch(passStockCode);
-        alert("Make api call with " + stockCode);
+        //make api call
+        console.log("Make api call to " + stockCode);
+
+        const quotePromise = new Promise((resolve, reject) => {
+            var quote = finnhubApi.get('/quote', {
+                params: {
+                    symbol: stockCode,
+                    token: 'bqhq9i7rh5rbubolrqd0'
+                }
+            })
+
+            if (quote) resolve(quote);
+            else reject("Wrong code!!!");
+        });
+
+        quotePromise.then((response) => {
+            console.log(response.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+        //clear stock code
         setstockCode("");
     }
 
