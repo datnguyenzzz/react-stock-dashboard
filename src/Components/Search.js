@@ -44,16 +44,47 @@ var Search = ({ dispatch }) => {
         });
 
         quotePromise.then((response) => {
-            console.log(response.data);
+            handleQuoteData(response.data);
         }).catch((err) => {
             console.log(err);
         })
 
         //get stock candle
 
+        let toDate = Math.round(new Date().getTime() / 1000);
+        let fromDate = toDate - (72 * 3600);
+        const candlePromise = new Promise((resolve, reject) => {
+            var candle = finnhubApi.get('/stock/candle', {
+                params: {
+                    symbol: stockCode,
+                    resolution: 5,
+                    from: fromDate,
+                    to: toDate,
+                    token: 'bqhq9i7rh5rbubolrqd0'
+                }
+            })
+
+            if (candle) resolve(candle);
+            else reject("Wrong code!!");
+        });
+
+        candlePromise.then((response) => {
+            handleCandleData(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 
         //clear stock code
         setStockCode("");
+    }
+
+    var handleQuoteData = (data) => {
+        console.log(data);
+    }
+
+    var handleCandleData = (data) => {
+        console.log(data);
     }
 
     /**
