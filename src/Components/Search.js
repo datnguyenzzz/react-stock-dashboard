@@ -6,7 +6,7 @@ import finnhubApi from "../apis/finnhubApi";
 
 var Search = ({ dispatch }) => {
 
-    const [stockCode, setstockCode] = useState("");
+    const [stockCode, setStockCode] = useState("");
 
     const passStockCode = {
         type: ACTION.SET_STOCK_CODE,
@@ -30,6 +30,7 @@ var Search = ({ dispatch }) => {
         //make api call
         console.log("Make api call to " + stockCode);
 
+        //get qoute data
         const quotePromise = new Promise((resolve, reject) => {
             var quote = finnhubApi.get('/quote', {
                 params: {
@@ -47,8 +48,21 @@ var Search = ({ dispatch }) => {
         }).catch((err) => {
             console.log(err);
         })
+
+        //get stock candle
+
+
         //clear stock code
-        setstockCode("");
+        setStockCode("");
+    }
+
+    /**
+     * 
+     * @param {*} event 
+     * @apiNote change stock to upper case
+     */
+    var changeStockCode = (event) => {
+        setStockCode(event.target.value.toUpperCase());
     }
 
     return (
@@ -59,9 +73,7 @@ var Search = ({ dispatch }) => {
                 </h2>
                 <input type="text" value = {stockCode}
                     className="form-control stock-code__value"
-                    onChange={(event)=>{
-                        setstockCode(event.target.value);
-                    }}
+                    onChange={changeStockCode}
                     placeholder = "Stock code (e.g GOOG)"/>
 
                 <button onClick={handleSearchQuery}
