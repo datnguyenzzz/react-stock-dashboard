@@ -17,7 +17,7 @@ var Search = () => {
                     Search stock code: 
                 </h2>
                 <input type="text" value = {stockCode}
-                    className="form-control"
+                    className="form-control stock-code__value"
                     onChange={(event)=>{
                         setstockCode(event.target.value);
                     }}

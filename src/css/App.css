@@ -5,13 +5,29 @@
   color: white;
 }
 
+.app-container__container {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .app-container__row {
   height: 60%;
   max-height: 400px;
 }
 
 .app-container__left{
+  padding-right: 1%;
   width: 30%;
   height: 100%;
-  max-height: 415px;
+  max-height: 400px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.app-container__right {
+  width: 70%;
+  height: 100%;
+  max-height: 400px;
 }
