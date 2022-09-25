@@ -4,7 +4,8 @@ import "../css/App.css"
 import "../css/styles.css"
 
 export const ACTION = {
-  SET_STOCK_CODE: "set-stock-code"
+  SET_STOCK_CODE: "set-stock-code",
+  SET_CANDLE_DATA: "set-candle-data"
 }
 
 /**
@@ -18,6 +19,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case ACTION.SET_STOCK_CODE:
       return {...state, stockCode: action.payload.stockCode};
+    case ACTION.SET_CANDLE_DATA:
+      return {...state, candleData: action.payload.candleData};
     default:
       return state;
   }
@@ -25,7 +28,7 @@ const reducer = (state, action) => {
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, {stockCode: ""});
+  const [state, dispatch] = useReducer(reducer, {stockCode: "", candleData: {}});
 
   return (
     <div className="app-container">
@@ -38,9 +41,20 @@ function App() {
             </div>
           </div>
           <div className="app-container__right">
-            <div className="card card-container">
+            <div className="card card-container graph">
               <div className="card-body">
-                {(state.stockCode==="")? "Stock code" : state.stockCode}
+                <h2 className="h4 mb-0">
+                  {(state.stockCode==="")? "" : state.stockCode + " (last 72 hours)"}
+                </h2>
+                {Object.keys(state.candleData).length===0 ? 
+                  <p className="no-candle-data-message">
+                    No current stock found. Go to the first box and search for a stock.
+                  </p>
+                  : 
+                  <div>
+                    {state.candleData.c}
+                  </div>
+                }
               </div>
             </div>
           </div>

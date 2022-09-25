@@ -11,8 +11,20 @@ var Search = ({ dispatch }) => {
     const passStockCode = {
         type: ACTION.SET_STOCK_CODE,
         payload: {
-            stockCode: stockCode
+            stockCode: stockCode,
+            candleData: {}
         }
+    }
+
+    const passCandleData = (data) => {
+        return {
+            type: ACTION.SET_CANDLE_DATA,
+            payload: {
+                stockCode: stockCode,
+                candleData: data
+            }
+        }
+        
     }
 
     /**
@@ -84,7 +96,11 @@ var Search = ({ dispatch }) => {
     }
 
     var handleCandleData = (data) => {
-        console.log(data);
+        if (data.s === 'ok') {
+            var payload = passCandleData(data);
+            console.log(payload)
+            dispatch(payload);
+        }
     }
 
     /**
