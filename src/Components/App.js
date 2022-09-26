@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React from "react";
 import Search from "./Search";
 import "../css/App.css"
 import "../css/styles.css"
@@ -10,55 +10,80 @@ export const ACTION = {
   SET_CANDLE_DATA: "set-candle-data"
 }
 
-/**
- * 
- * @param {*} state 
- * @param {*} action
- * @apiNode action = {type: ... , payload: {...}} 
- * @apiNode state = {stockCode: ...}
- */
-const reducer = (state, action) => {
-  switch (action.type) {
-    case ACTION.SET_STOCK_CODE:
-      return {...state, stockCode: action.payload.stockCode};
-    case ACTION.SET_CANDLE_DATA:
-      return {...state, candleData: action.payload.candleData};
-    default:
-      return state;
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      stockCode: "",
+      candleData: ""
+    }
   }
-}
+  
+  setStockCode = (newStockCode) => {
+    this.setState({
+      stockCode: newStockCode
+    })
+  }
 
-function App() {
+  setCandleData = (newCandleData) => {
+    this.setState({
+      candleData: newCandleData
+    })
+  }
 
-  const [state, dispatch] = useReducer(reducer, {stockCode: "", candleData: {}});
+  /**
+   * 
+   * @param {*} action 
+   * @apiNote action = {type: ... , payload: {...}} 
+   */
+  dispatch = (action) => {
+    console.log(action);
+    switch (action.type) {
+      case ACTION.SET_STOCK_CODE:
+        return this.setStockCode(action.payload.stockCode);
+      case ACTION.SET_CANDLE_DATA:
+        return this.setCandleData(action.payload.candleData);
+      default:
+        return this.state;
+    }
+  }
 
-  return (
-    <div className="app-container">
-      <div className="row app-container__row">
-        <div className="col-12 app-container__container">
-          <div className="app-container__left">
-            <Search dispatch = {dispatch} />
-            <Filter dispatch = {dispatch} />
-          </div>
-          <div className="app-container__right">
-            <div className="card card-container graph">
-              <div className="card-body">
-                
-                {Object.keys(state.candleData).length===0 ||
-                  state.candleData.s === "no_data" ? 
-                  <p className="no-candle-data-message">
-                    No current stock found. Go to the first box and search for a stock.
-                  </p>
-                  : 
-                  <MyChart stockCode = {state.stockCode} candleData = {state.candleData} dispatch = {dispatch} />
-                }
+  render() {
+
+    return (
+      <div className="app-container">
+        <div className="row app-container__row">
+          <div className="col-12 app-container__container">
+            <div className="app-container__left">
+              <Search dispatch = {this.dispatch} />
+              <Filter dispatch = {this.dispatch} />
+            </div>
+            <div className="app-container__right">
+              <div className="card card-container graph">
+                <div className="card-body">
+                  
+                  {Object.keys(this.state.candleData).length===0 ||
+                    this.state.candleData.s === "no_data" ? 
+                    <p className="no-candle-data-message">
+                      No current stock found. Go to the first box and search for a stock.
+                    </p>
+                    : 
+                    <MyChart stockCode = {this.state.stockCode} candleData = {this.state.candleData} dispatch = {this.dispatch} />
+                  }
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div className="row table-data-row">
+          <div className="col-12 table-data-col">
+            Quota Data
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 }
 
 export default App;

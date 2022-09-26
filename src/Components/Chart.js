@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import "../css/chart.css";
 import "../css/App.css";
-import useChart from "../CustomHooks/useChart";
+import { Chart, registerables } from "chart.js";
 
 /**
  * 
@@ -97,28 +97,43 @@ var setUpChartConfig = (data) => {
  * @apiNote stockValue: AAPL
  * @apiNote candleData: {c: Array(179), h: Array(179) …}
  */
-var MyChart = ({ stockCode, candleData, dispatch }) => {
-    //canvas ref
-    const canvasRef = useRef(null);
-    //plottable data object
-    const plottableData = preparePlotableCloseData(stockCode, candleData);
-    // set up chart
-    const configChart = setUpChartConfig(plottableData);
-    // render chart
-    useChart(canvasRef, configChart);
-    return (
-        <div className="my__chart" id={"myChart-"+stockCode}>
-            <h2 className="h5 mb-3">
-                {(stockCode==="")? "" : stockCode}
-                <div className="ml-2 d-inline">
-                (Last 72 hours)
+class MyChart extends React.Component {
+    constructor() {
+        super();
+        this.chartRef = React.createRef();
+    }
+
+    componentWillMount = () => {
+        Chart.register(...registerables);
+    }
+
+    componentDidMount = () => {
+        //canvas ref
+        var canvasRef = this.chartRef.current.getContext("2d");
+        //plottable data object
+        var plottableData = preparePlotableCloseData(this.props.stockCode, this.props.candleData);
+        // set up chart
+        var configChart = setUpChartConfig(plottableData);
+        console.log(plottableData);
+        // render chart
+        new Chart(canvasRef, configChart);
+    }
+
+    render() {
+        return (
+            <div className="my__chart" id={"myChart-"+this.props.stockCode}>
+                <h2 className="h5 mb-3">
+                    {(this.props.stockCode==="")? "" : this.props.stockCode}
+                    <div className="ml-2 d-inline">
+                    (Last 72 hours)
+                    </div>
+                </h2>
+                <div className="my__canvas">
+                    <canvas ref = {this.chartRef}/>
                 </div>
-            </h2>
-            <div className="my__canvas">
-                <canvas ref = {canvasRef}/>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default MyChart;

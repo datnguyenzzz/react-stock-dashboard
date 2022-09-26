@@ -1,21 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import "../css/styles.css";
 import "../css/search.css";
 import { ACTION } from "./App";
 import finnhubApi from "../apis/finnhubApi";
 
-var Search = ({ dispatch }) => {
+class Search extends React.Component {
 
-    const [stockCode, setStockCode] = useState("");
+    constructor(props) {
+        super(props);
 
-    const passStockCode = {
-        type: ACTION.SET_STOCK_CODE,
-        payload: {
-            stockCode: stockCode
+        this.state = {
+            stockCode: ""
         }
     }
 
-    const passCandleData = (data) => {
+    setStockCode = (newStockCode) => {
+        this.setState({
+            stockCode: newStockCode
+        });
+    }
+
+    passStockCode = (data) => {
+        return {
+            type: ACTION.SET_STOCK_CODE,
+            payload: {
+                stockCode: data
+            }
+        }
+    }
+
+    passCandleData = (data) => {
         return {
             type: ACTION.SET_CANDLE_DATA,
             payload: {
@@ -34,17 +48,18 @@ var Search = ({ dispatch }) => {
      * candle: /stock/candle?symbol=&resolution=&from=&to=
      * 3. clear current code
      */
-    var handleSearchQuery = () => {
+    handleSearchQuery = () => {
         //pass stock code to App
-        dispatch(passStockCode);
+        var payload = this.passStockCode(this.state.stockCode);
+        this.props.dispatch(payload);
         //make api call
-        console.log("Make api call to " + stockCode);
+        console.log("Make api call to " + this.state.stockCode);
 
         //get qoute data
         const quotePromise = new Promise((resolve, reject) => {
             var quote = finnhubApi.get('/quote', {
                 params: {
-                    symbol: stockCode,
+                    symbol: this.state.stockCode,
                     token: 'bqhq9i7rh5rbubolrqd0'
                 }
             })
@@ -54,7 +69,7 @@ var Search = ({ dispatch }) => {
         });
 
         quotePromise.then((response) => {
-            handleQuoteData(response.data);
+            this.handleQuoteData(response.data);
         }).catch((err) => {
             console.log(err);
         })
@@ -64,12 +79,12 @@ var Search = ({ dispatch }) => {
         let toDate = Math.round(new Date().getTime() / 1000);
         let fromDate = toDate - (72 * 3600);
         const candlePromise = new Promise((resolve, reject) => {
-            var payload = passCandleData({});
-            dispatch(payload);
+            var payload = this.passCandleData({});
+            this.props.dispatch(payload);
             //make call api
             var candle = finnhubApi.get('/stock/candle', {
                 params: {
-                    symbol: stockCode,
+                    symbol: this.state.stockCode,
                     resolution: 5,
                     from: fromDate,
                     to: toDate,
@@ -82,23 +97,23 @@ var Search = ({ dispatch }) => {
         });
 
         candlePromise.then((response) => {
-            handleCandleData(response.data);
+            this.handleCandleData(response.data);
         })
         .catch((err) => {
             console.log(err);
         })
 
         //clear stock code
-        setStockCode("");
+        this.setStockCode("");
     }
 
-    var handleQuoteData = (data) => {
+    handleQuoteData = (data) => {
         console.log(data);
     }
 
-    var handleCandleData = (data) => {
-        var payload = passCandleData(data);
-        dispatch(payload);
+    handleCandleData = (data) => {
+        var payload = this.passCandleData(data);
+        this.props.dispatch(payload);
     }
 
     /**
@@ -106,28 +121,30 @@ var Search = ({ dispatch }) => {
      * @param {*} event 
      * @apiNote change stock to upper case
      */
-    var changeStockCode = (event) => {
-        setStockCode(event.target.value.toUpperCase());
+    changeStockCode = (event) => {
+        this.setStockCode(event.target.value.toUpperCase());
     }
 
-    return (
-        <div className="card card-container search">
-            <div className="card-body">
-                <h2 className="h6 mb-2">
-                    Search stock code: 
-                </h2>
-                <input type="text" value = {stockCode}
-                    className="form-control stock-code__value"
-                    onChange={changeStockCode}
-                    placeholder = "Stock code (e.g GOOG)"/>
+    render() {
+        return (
+            <div className="card card-container search">
+                <div className="card-body">
+                    <h2 className="h6 mb-2">
+                        Search stock code: 
+                    </h2>
+                    <input type="text" value = {this.state.stockCode}
+                        className="form-control stock-code__value"
+                        onChange={this.changeStockCode}
+                        placeholder = "Stock code (e.g GOOG)"/>
 
-                <button onClick={handleSearchQuery}
-                    className="btn btn-secondary w-100 btn-search"> 
-                    Search result 
-                </button>
+                    <button onClick={this.handleSearchQuery}
+                        className="btn btn-secondary w-100 btn-search"> 
+                        Search result 
+                    </button>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default Search;

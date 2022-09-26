@@ -33,7 +33,7 @@
 }
 
 .graph.card-container {
-  height: calc(60vh - 15px);
+  height: calc(60vh - 18px);
 }
 
 .graph.card-container .card-body {
