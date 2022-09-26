@@ -4,10 +4,12 @@ import "../css/App.css"
 import "../css/styles.css"
 import MyChart from "./Chart";
 import Filter from "./Filter";
+import TableQuote from "./TableQuote";
 
 export const ACTION = {
   SET_STOCK_CODE: "set-stock-code",
-  SET_CANDLE_DATA: "set-candle-data"
+  SET_CANDLE_DATA: "set-candle-data",
+  ADD_QUOTE_DATA: "add-quote-data"
 }
 
 class App extends React.Component {
@@ -16,7 +18,8 @@ class App extends React.Component {
 
     this.state = {
       stockCode: "",
-      candleData: ""
+      candleData: "",
+      quoteTable: {}
     }
   }
   
@@ -32,18 +35,31 @@ class App extends React.Component {
     })
   }
 
+  setQuoteTable = (stockCode, newQuoteData) => {
+    this.setState({
+      quoteTable: {
+        ...this.state.quoteTable,
+        [stockCode]: newQuoteData
+      }
+    }, () => {
+      console.log(this.state.quoteTable);
+    })
+
+  }
+
   /**
    * 
    * @param {*} action 
    * @apiNote action = {type: ... , payload: {...}} 
    */
   dispatch = (action) => {
-    console.log(action);
     switch (action.type) {
       case ACTION.SET_STOCK_CODE:
         return this.setStockCode(action.payload.stockCode);
       case ACTION.SET_CANDLE_DATA:
         return this.setCandleData(action.payload.candleData);
+      case ACTION.ADD_QUOTE_DATA:
+        return this.setQuoteTable(action.payload.stockCode, action.payload.quoteData);
       default:
         return this.state;
     }
@@ -78,7 +94,7 @@ class App extends React.Component {
         </div>
         <div className="row table-data-row">
           <div className="col-12 table-data-col">
-            Quota Data
+            <TableQuote quoteTable={this.state.quoteTable} />
           </div>
         </div>
       </div>

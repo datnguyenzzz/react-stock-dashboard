@@ -39,6 +39,16 @@ class Search extends React.Component {
         
     }
 
+    passQuoteData = (code, data) => {
+        return {
+            type: ACTION.ADD_QUOTE_DATA,
+            payload: {
+                stockCode: code,
+                quoteData: data
+            }
+        }
+    }
+
     /**
      * 1. pass stock code to App state
      * 2. make api call
@@ -99,16 +109,18 @@ class Search extends React.Component {
         candlePromise.then((response) => {
             this.handleCandleData(response.data);
         })
+        .then(() => {
+            //clear stock code
+            this.setStockCode("");
+        })
         .catch((err) => {
             console.log(err);
         })
-
-        //clear stock code
-        this.setStockCode("");
     }
 
     handleQuoteData = (data) => {
-        console.log(data);
+        let payload = this.passQuoteData(this.state.stockCode, data);
+        this.props.dispatch(payload);
     }
 
     handleCandleData = (data) => {
