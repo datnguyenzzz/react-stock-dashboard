@@ -20,7 +20,7 @@
   padding-right: 1%;
   width: 30%;
   height: 100%;
-  max-height: 400px;
+  max-height: 450px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -33,7 +33,7 @@
 }
 
 .graph.card-container {
-  height: 60vh;
+  height: calc(60vh - 15px);
 }
 
 .graph.card-container .card-body {

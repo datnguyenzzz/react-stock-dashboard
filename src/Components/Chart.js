@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import "../css/chart.css";
+import "../css/App.css";
 import useChart from "../CustomHooks/useChart";
 
 /**

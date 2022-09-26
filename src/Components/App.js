@@ -3,6 +3,7 @@ import Search from "./Search";
 import "../css/App.css"
 import "../css/styles.css"
 import MyChart from "./Chart";
+import Filter from "./Filter";
 
 export const ACTION = {
   SET_STOCK_CODE: "set-stock-code",
@@ -37,9 +38,7 @@ function App() {
         <div className="col-12 app-container__container">
           <div className="app-container__left">
             <Search dispatch = {dispatch} />
-            <div>
-              Filter
-            </div>
+            <Filter dispatch = {dispatch} />
           </div>
           <div className="app-container__right">
             <div className="card card-container graph">
