@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import "../css/chart.css";
 import useChart from "../CustomHooks/useChart";
 
 /**
@@ -79,7 +80,8 @@ var setUpChartConfig = (data) => {
               point:{
                   radius: 0
               }
-            }
+            },
+            maintainAspectRatio: false,
         }
         
     }
@@ -104,9 +106,17 @@ var MyChart = ({ stockCode, candleData, dispatch }) => {
     // render chart
     useChart(canvasRef, configChart);
     return (
-        <>
-            <canvas ref = {canvasRef}/>
-        </>
+        <div className="my__chart" id={"myChart-"+stockCode}>
+            <h2 className="h5 mb-3">
+                {(stockCode==="")? "" : stockCode}
+                <div className="ml-2 d-inline">
+                (Last 72 hours)
+                </div>
+            </h2>
+            <div className="my__canvas">
+                <canvas ref = {canvasRef}/>
+            </div>
+        </div>
     );
 }
 

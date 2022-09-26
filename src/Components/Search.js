@@ -64,7 +64,6 @@ var Search = ({ dispatch }) => {
         let toDate = Math.round(new Date().getTime() / 1000);
         let fromDate = toDate - (72 * 3600);
         const candlePromise = new Promise((resolve, reject) => {
-            //remove candle
             var payload = passCandleData({});
             dispatch(payload);
             //make call api

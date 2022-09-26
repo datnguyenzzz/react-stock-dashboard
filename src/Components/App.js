@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useReducer } from "react";
 import Search from "./Search";
 import "../css/App.css"
 import "../css/styles.css"
@@ -29,12 +29,6 @@ const reducer = (state, action) => {
 
 function App() {
 
-  const renderCount = useRef(0);
-
-  useEffect(() => {
-    renderCount.current+=1;
-  })
-
   const [state, dispatch] = useReducer(reducer, {stockCode: "", candleData: {}});
 
   return (
@@ -44,15 +38,13 @@ function App() {
           <div className="app-container__left">
             <Search dispatch = {dispatch} />
             <div>
-              Filter {renderCount.current}
+              Filter
             </div>
           </div>
           <div className="app-container__right">
             <div className="card card-container graph">
               <div className="card-body">
-                <h2 className="h4 mb-0">
-                  {(state.stockCode==="")? "" : state.stockCode + " (last 72 hours)"}
-                </h2>
+                
                 {Object.keys(state.candleData).length===0 ||
                   state.candleData.s === "no_data" ? 
                   <p className="no-candle-data-message">
