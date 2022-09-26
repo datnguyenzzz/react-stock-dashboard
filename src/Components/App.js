@@ -19,6 +19,7 @@ class App extends React.Component {
     this.state = {
       stockCode: "",
       candleData: "",
+      loadingQuoteTable: true,
       quoteTable: {}
     }
   }
@@ -35,14 +36,17 @@ class App extends React.Component {
     })
   }
 
-  setQuoteTable = (stockCode, newQuoteData) => {
+  setQuoteTable = (newStockCode, newQuoteData) => {
+    console.log(newStockCode)
+    console.log(newQuoteData)
+    this.setState({loadingQuoteTable: true});
     this.setState({
       quoteTable: {
         ...this.state.quoteTable,
-        [stockCode]: newQuoteData
+        [newStockCode]: newQuoteData
       }
     }, () => {
-      console.log(this.state.quoteTable);
+      this.setState({loadingQuoteTable: false});
     })
 
   }
@@ -66,7 +70,6 @@ class App extends React.Component {
   }
 
   render() {
-
     return (
       <div className="app-container">
         <div className="row app-container__row">
@@ -94,7 +97,7 @@ class App extends React.Component {
         </div>
         <div className="row table-data-row">
           <div className="col-12 table-data-col">
-            <TableQuote quoteTable={this.state.quoteTable} />
+            <TableQuote loading = {this.state.loadingQuoteTable} quoteData={this.state.quoteTable} />
           </div>
         </div>
       </div>
