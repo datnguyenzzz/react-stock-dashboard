@@ -1,0 +1,52 @@
+.app-container {
+  height: 100vh;
+  padding: 15px;
+  background: #332D2D;
+  color: white;
+}
+
+.app-container__container {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.app-container__row {
+  height: 60%;
+  max-height: 400px;
+}
+
+.app-container__left{
+  padding-right: 1%;
+  width: 30%;
+  height: 100%;
+  max-height: 450px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.app-container__right {
+  width: 70%;
+  height: 100%;
+  max-height: 400px;
+}
+
+.graph.card-container {
+  height: calc(60vh - 18px);
+}
+
+.graph.card-container .card-body {
+  position: relative;
+}
+
+.no-candle-data-message{
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  font-size: 14px;
+  text-align: center;
+}
+

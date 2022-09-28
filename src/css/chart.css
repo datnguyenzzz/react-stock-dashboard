@@ -1,0 +1,8 @@
+.my__chart {
+    pointer-events: none;
+}
+
+.my__canvas {
+    position: relative;
+    height: 340px;
+}

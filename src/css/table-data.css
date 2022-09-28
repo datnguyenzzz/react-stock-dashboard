@@ -1,0 +1,20 @@
+.table-data.card-container{
+    padding: 10px;
+    font-size: 13px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    height: 250px;
+}
+
+.table-data.card-container .card-body{
+    padding: 10px;
+    font-size: 13px;
+}
+
+.table{
+    color: white;
+}
+
+.table thead th{
+    border-bottom: 1px solid white !important;
+}
